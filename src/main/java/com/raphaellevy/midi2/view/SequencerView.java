@@ -7,6 +7,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.InvocationTargetException;
 
+import static com.raphaellevy.midi2.Midi2.lato12;
+
 /**
  * Displays the Midi Sequencer.
  */
@@ -44,7 +46,12 @@ public class SequencerView {
      * The individual note panels
      */
     private IndividualNote[] individualNotes = new IndividualNote[5];
-    
+
+    /**
+     * The note buttons
+     */
+    private JButton[] noteButtons = new JButton[8];
+
     /**
      * The controller for this view
      */
@@ -153,6 +160,7 @@ public class SequencerView {
          */
         private void setup() {
             add(new NoteDisplay());
+            add(new NoteButtonSet());
         }
     }
     
@@ -190,12 +198,33 @@ public class SequencerView {
             }
             setOpaque(true);
             setLayout(null);
-            label = new JLabel("C");
-            label.setFont(Midi2.lato12.deriveFont(48.0f));
+            label = new JLabel();
+            label.setFont(lato12.deriveFont(48.0f));
             label.setBounds(3 * GRID, 3 * GRID, 6 * GRID, 7 * GRID);
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label);
             
+        }
+    }
+
+    /**
+     * Contains the note buttons
+     */
+    private class NoteButtonSet extends JPanel {
+        private NoteButtonSet() {
+            super();
+            setLayout(null);
+            setOpaque(false);
+            setBounds(16*GRID,30*GRID,46*GRID,4*GRID);
+            for (int i = 0; i < 8; i++) {
+                JButton button = new JButton(String.valueOf("CDEFGABC".charAt(i)));
+                button.setBounds(i*6*GRID,0,4*GRID,4*GRID);
+                button.setFont(lato12.deriveFont(36f));
+                button.setActionCommand(String.format("%dnoteButton", i));
+                button.addActionListener(controller);
+                add(button);
+                noteButtons[i] = button;
+            }
         }
     }
 }
