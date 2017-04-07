@@ -1,12 +1,15 @@
 package com.raphaellevy.midi2;
 
 import com.raphaellevy.midi2.controller.SequencerController;
+import com.raphaellevy.midi2.midi.EasySeq;
 
 import java.awt.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+
+import static com.raphaellevy.midi2.NoteUtil.*;
 
 /**
  * The main class for the application.
@@ -17,12 +20,17 @@ import java.nio.file.StandardCopyOption;
  * in the controller or view package, is the actual application code, which does the MIDI and file IO stuff.
  */
 public class Midi2 {
-    
+
     /**
      * The 12 point Lato font
      */
     @SuppressWarnings("WeakerAccess")
     public static Font lato12;
+    
+    /**
+     * The sequencer
+     */
+    private EasySeq seq;
     
     /**
      * Main method
@@ -33,18 +41,22 @@ public class Midi2 {
         Midi2 app = new Midi2();
         app.start();
     }
-    
+
     /**
      * Start the application.
      */
     private void start() {
         loadFonts();
-        
+
         //Create the controller, which will create the window.
-        SequencerController controller = new SequencerController();
+        SequencerController controller = new SequencerController(this);
         controller.display();
-    }
     
+        //Set up midi
+        seq = new EasySeq();
+        controller.setSequencer(seq);
+    }
+
     /**
      * Set up fonts
      */
@@ -61,5 +73,16 @@ public class Midi2 {
             System.out.println("PROBLEM LOADING FONTS!!!!!! UH OH!!!!!!!");
             e.printStackTrace();
         }
+    }
+    
+    /**
+     * Called when a note is inputted
+     */
+    public void notePressed(int button, String text) {
+        int note;
+        note = getNote(text);
+        seq.stop();
+        seq.addNote(note,400);
+        
     }
 }
