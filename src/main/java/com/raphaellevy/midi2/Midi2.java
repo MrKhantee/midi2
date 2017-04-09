@@ -9,8 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
-import static com.raphaellevy.midi2.NoteUtil.*;
-
 /**
  * The main class for the application.
  * <p>
@@ -20,7 +18,7 @@ import static com.raphaellevy.midi2.NoteUtil.*;
  * in the controller or view package, is the actual application code, which does the MIDI and file IO stuff.
  */
 public class Midi2 {
-
+    
     /**
      * The 12 point Lato font
      */
@@ -41,22 +39,22 @@ public class Midi2 {
         Midi2 app = new Midi2();
         app.start();
     }
-
+    
     /**
      * Start the application.
      */
     private void start() {
         loadFonts();
-
+        
         //Create the controller, which will create the window.
         SequencerController controller = new SequencerController(this);
         controller.display();
-    
+        
         //Set up midi
         seq = new EasySeq();
         controller.setSequencer(seq);
     }
-
+    
     /**
      * Set up fonts
      */
@@ -78,11 +76,8 @@ public class Midi2 {
     /**
      * Called when a note is inputted
      */
-    public void notePressed(int button, String text) {
-        int note;
-        note = getNote(text);
+    public void notePressed(int note) {
         seq.stop();
-        seq.addNote(note,400);
-        
+        seq.addNote(note, 200);
     }
 }

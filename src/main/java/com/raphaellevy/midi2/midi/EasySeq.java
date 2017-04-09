@@ -12,24 +12,21 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class EasySeq {
     
     /**
+     * The thread on which notes happen
+     */
+    private final Thread t;
+    /**
      * The synthesizer being used to play MIDI
      */
     private Synthesizer synth;
-    
     /**
      * The midi channels
      */
     private MidiChannel[] channels;
-    
     /**
      * The notes to be played
      */
     private LinkedBlockingQueue<Note> notes = new LinkedBlockingQueue<>();
-    
-    /**
-     * The thread on which notes happen
-     */
-    private Thread t;
     
     /**
      * Make a new easy sequencer
@@ -52,19 +49,24 @@ public class EasySeq {
             e.printStackTrace();
             System.exit(1);
         }
-        t = new Thread(()->{
+        t = new Thread(() -> {
             while (true) {
                 try {
                     Note note = notes.take();
                     if (note.note >= 0) {
-                        channels[0].noteOn(note.note,100);
+                        channels[0].noteOn(note.note, note.velocity);
+                        System.out.println("On");
                         Thread.sleep(note.length);
+                        System.out.println("Off");
                         channels[0].noteOff(note.note);
                     } else {
                         Thread.sleep(note.length);
                     }
                 } catch (InterruptedException e) {
                     System.out.println("Interrupt");
+                    synchronized (this) {
+                        this.notifyAll();
+                    }
                 }
             }
         });
@@ -74,7 +76,7 @@ public class EasySeq {
     /**
      * Add a note to the queue of notes to be played
      *
-     * @param note  the note to play
+     * @param note the note to play
      * @param mils how long
      */
     public synchronized void addNote(int note, int mils) {
@@ -83,10 +85,11 @@ public class EasySeq {
     
     /**
      * Add a rest
+     *
      * @param mils how long
      */
     public synchronized void addRest(int mils) {
-        notes.add(new Note(-1,mils));
+        notes.add(new Note(-1, mils));
     }
     
     /**
@@ -96,6 +99,13 @@ public class EasySeq {
         channels[0].allSoundOff();
         notes.clear();
         t.interrupt();
+        synchronized (this) {
+            try {
+                this.wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     /**
@@ -104,15 +114,29 @@ public class EasySeq {
     private static final class Note {
         final int note;
         final int length;
-    
+        final int velocity;
+        
         /**
          * Make a new note of given length. A negative note value represents a rest.
-         * @param note Which note
+         *
+         * @param note   Which note
          * @param length How long
          */
         private Note(int note, int length) {
-            this.note=note;
-            this.length=length;
+            this(note, length, 100);
+        }
+        
+        /**
+         * Make a new note of given length and velocity. A negative note value represents a rest.
+         *
+         * @param note     Which note
+         * @param length   How long
+         * @param velocity How loud
+         */
+        private Note(int note, int length, int velocity) {
+            this.note = note;
+            this.length = length;
+            this.velocity = velocity;
         }
     }
 }

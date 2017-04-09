@@ -14,6 +14,9 @@ public final class NoteUtil {
     public static final int B = 71;
     public static final int C5 = 72;
     
+    private NoteUtil() {
+    }
+    
     public static final int getNote(String note) {
         switch (note) {
             case "C":
@@ -36,5 +39,4 @@ public final class NoteUtil {
                 return C;
         }
     }
-    private NoteUtil(){}
 }

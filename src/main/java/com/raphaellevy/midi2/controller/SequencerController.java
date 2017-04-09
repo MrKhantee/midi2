@@ -4,7 +4,6 @@ import com.raphaellevy.midi2.Midi2;
 import com.raphaellevy.midi2.midi.EasySeq;
 import com.raphaellevy.midi2.view.SequencerView;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -32,7 +31,7 @@ public class SequencerController implements ActionListener {
      * Make a new controller
      */
     public SequencerController(Midi2 app) {
-        this.app=app;
+        this.app = app;
     }
     
     /**
@@ -44,10 +43,11 @@ public class SequencerController implements ActionListener {
     
     /**
      * Sets the MIDI sequencer
+     *
      * @param seq the sequencer
      */
     public void setSequencer(EasySeq seq) {
-        this.seq=seq;
+        this.seq = seq;
     }
     
     /**
@@ -60,8 +60,8 @@ public class SequencerController implements ActionListener {
         String command = e.getActionCommand();
         if (command.contains("noteButton")) {
             System.out.println(String.format("Note %s pressed!", command.charAt(0)));
-            int i = Character.getNumericValue(command.charAt(0));
-            app.notePressed(i, ((JButton)e.getSource()).getText());
+            SequencerView.NoteButton b = (SequencerView.NoteButton) e.getSource();
+            app.notePressed(b.note);
         }
     }
 }
