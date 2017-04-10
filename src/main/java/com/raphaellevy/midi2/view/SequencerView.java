@@ -53,6 +53,11 @@ public class SequencerView {
     private JButton[] noteButtons = new JButton[8];
     
     /**
+     * The menu bar
+     */
+    private MMenuBar menuBar;
+    
+    /**
      * The controller for this view
      */
     private SequencerController controller = null;
@@ -88,6 +93,10 @@ public class SequencerView {
                 //Add the Panel to the JFrame
                 view.frame.setContentPane(view.panel);
                 view.frame.pack();
+                
+                //Add the menu bar
+                view.menuBar = new MMenuBar(controller);
+                view.frame.setJMenuBar(view.menuBar);
                 
                 //Make the frame visible
                 view.frame.setVisible(true);
@@ -244,7 +253,7 @@ public class SequencerView {
     public class NoteButton extends JButton {
         public final int note;
         
-        public NoteButton(String text, int note) {
+        private NoteButton(String text, int note) {
             super(text);
             this.note = note;
         }

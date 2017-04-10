@@ -36,6 +36,7 @@ public class Midi2 {
      * @param args the command line args.
      */
     public static void main(String[] args) {
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
         Midi2 app = new Midi2();
         app.start();
     }

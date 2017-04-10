@@ -17,7 +17,7 @@ public final class NoteUtil {
     private NoteUtil() {
     }
     
-    public static final int getNote(String note) {
+    public static int getNote(String note) {
         switch (note) {
             case "C":
                 return C;
