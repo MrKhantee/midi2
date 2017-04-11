@@ -18,7 +18,8 @@ import java.nio.file.StandardCopyOption;
  * in the controller or view package, is the actual application code, which does the MIDI and file IO stuff.
  */
 public class Midi2 {
-    
+    public static final boolean MUTED = false;
+
     /**
      * The 12 point Lato font
      */

@@ -1,5 +1,7 @@
 package com.raphaellevy.midi2.midi;
 
+import com.raphaellevy.midi2.Midi2;
+
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
@@ -37,7 +39,7 @@ public class EasySeq {
             synth = MidiSystem.getSynthesizer();
             
             //Open it up
-            if (!synth.isOpen()) synth.open();
+            if (!synth.isOpen() && !Midi2.MUTED) synth.open();
             
             //Get the channels
             channels = synth.getChannels();

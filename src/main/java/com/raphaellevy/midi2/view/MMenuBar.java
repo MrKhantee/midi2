@@ -4,30 +4,31 @@ import com.raphaellevy.midi2.controller.MenuBarController;
 import com.raphaellevy.midi2.controller.SequencerController;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionListener;
+
+import static java.awt.event.InputEvent.META_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
+import static java.awt.event.KeyEvent.*;
 
 /**
  * The menu bar for the application
  */
 class MMenuBar extends JMenuBar {
-    
+
+    private final MenuBarController controller;
     /**
      * The file menu
      */
     private JMenu fileMenu;
-    
     /**
      * The "Sequence" menu
      */
     private JMenu sequenceMenu;
-    
     /**
      * The help menu
      */
     private JMenu helpMenu;
-    
-    private final MenuBarController controller;
-    
+
     MMenuBar(SequencerController scontroller) {
         super();
         controller = new MenuBarController(scontroller);
@@ -35,19 +36,52 @@ class MMenuBar extends JMenuBar {
         addSequenceMenu();
         addHelpMenu();
     }
-    
+
     private void addFileMenu() {
         fileMenu = new JMenu("File");
+
+        JMenuItem newItem = new JMenuItem("New");
+        newItem.setAccelerator(KeyStroke.getKeyStroke(VK_N, META_DOWN_MASK));
+        newItem.addActionListener(e -> controller.newItem());
+        fileMenu.add(newItem);
+
+        fileMenu.addSeparator();
+
+        addMenuItem(fileMenu, "Open", KeyStroke.getKeyStroke(VK_O, META_DOWN_MASK), e -> controller.openItem());
+
+        fileMenu.addSeparator();
+
+        addMenuItem(fileMenu, "Save", KeyStroke.getKeyStroke(VK_S, META_DOWN_MASK), e -> controller.saveItem());
+        addMenuItem(fileMenu, "Save As", KeyStroke.getKeyStroke(VK_S, META_DOWN_MASK | SHIFT_DOWN_MASK), e -> controller.saveAsItem());
+
         add(fileMenu);
     }
-    
+
     private void addSequenceMenu() {
         sequenceMenu = new JMenu("Sequence");
+
+        addMenuItem(sequenceMenu, "Clear", KeyStroke.getKeyStroke(VK_D, META_DOWN_MASK | SHIFT_DOWN_MASK), e -> controller.clearItem());
+        addMenuItem(sequenceMenu, "Delete", KeyStroke.getKeyStroke(VK_D, META_DOWN_MASK), e -> controller.deleteItem());
+
+        sequenceMenu.addSeparator();
+
+        addMenuItem(sequenceMenu, "Play", KeyStroke.getKeyStroke(VK_P, META_DOWN_MASK), e -> controller.playItem());
+        addMenuItem(sequenceMenu, "Stop", KeyStroke.getKeyStroke(VK_T, META_DOWN_MASK), e -> controller.stopItem());
+
         add(sequenceMenu);
     }
-    
+
     private void addHelpMenu() {
         helpMenu = new JMenu("Help");
         add(helpMenu);
     }
+
+    private void addMenuItem(JMenu menu, String text, KeyStroke keyStroke, ActionListener listener) {
+        JMenuItem item = new JMenuItem(text);
+        item.setAccelerator(keyStroke);
+        item.addActionListener(listener);
+        menu.add(item);
+    }
+
+    ;
 }
