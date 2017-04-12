@@ -77,6 +77,9 @@ class MMenuBar extends JMenuBar {
 
     private void addHelpMenu() {
         helpMenu = new JMenu("Help");
+
+        addMenuItem(helpMenu, "Show Instructions", KeyStroke.getKeyStroke(VK_I,META_DOWN_MASK), e -> controller.instructionsItem());
+
         add(helpMenu);
     }
 

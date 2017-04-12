@@ -9,6 +9,10 @@ import com.raphaellevy.midi2.view.SequencerView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
+import static java.awt.event.KeyEvent.*;
 
 /**
  * Manages the behavior of the SequencerView, handles events
@@ -97,5 +101,45 @@ public class SequencerController implements ActionListener {
 
     Midi2 getApp() {
         return app;
+    }
+
+    /**
+     * Listens for key presses
+     */
+    public final class MKeyListener implements KeyListener {
+
+        private boolean meta = false;
+        private boolean shift = false;
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() >= VK_A && e.getKeyCode() <= VK_G) {
+                if (!shift && !meta) {
+                    app.notePressed(NoteUtil.getNote(String.valueOf(Character.toUpperCase(e.getKeyChar()))));
+                }
+            } else if (e.getKeyCode() == VK_BACK_SPACE) {
+                app.deleteNote();
+            } else if (e.getKeyCode() == VK_SPACE) {
+                app.addRest();
+            } else if (e.getKeyCode() == VK_META) {
+                meta = true;
+            } else if (e.getKeyCode() == VK_SHIFT) {
+                shift = true;
+            }
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            if (e.getKeyCode() == VK_META) {
+                meta = false;
+            } else if (e.getKeyCode() == VK_SHIFT) {
+                shift = false;
+            }
+        }
     }
 }

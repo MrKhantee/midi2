@@ -58,4 +58,7 @@ public class MenuBarController {
         app.addContinue();
     }
 
+    public void instructionsItem() {
+        app.displayInstructions();
+    }
 }

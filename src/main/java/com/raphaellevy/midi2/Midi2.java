@@ -5,11 +5,10 @@ import com.raphaellevy.midi2.midi.EasySeq;
 
 import javax.swing.*;
 import java.awt.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.IOException;
+import java.nio.file.*;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static com.raphaellevy.midi2.MidiSequence.CONTINUE;
 import static com.raphaellevy.midi2.MidiSequence.REST;
@@ -180,6 +179,9 @@ public class Midi2 {
         MidiFileIO.saveMIDIFile(sequence);
     }
 
+    /**
+     * Called when a file should be opened.
+     */
     public void open() {
         Optional<MidiSequence> sequenceOptional = MidiFileIO.loadMIDIFile();
         if (sequenceOptional.isPresent()) sequenceOptional.ifPresent(inSequence -> {
@@ -191,6 +193,24 @@ public class Midi2 {
         });
         else {
             JOptionPane.showMessageDialog(null, "Failed to open file!", "OH NO!!!", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
+    private boolean instructionsAdded = false;
+
+    /**
+     * Open instructions
+     */
+    public void displayInstructions() {
+        Path instructionsFile = Paths.get(System.getProperty("user.home")).resolve("Library/Application Support/Midi2").resolve("Instructions.html");
+        if (!instructionsAdded) {
+            try {
+                Files.copy(getClass().getResourceAsStream("/html/Instructions.html"), instructionsFile, StandardCopyOption.REPLACE_EXISTING);
+                Desktop.getDesktop().browse(instructionsFile.toUri());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            instructionsAdded = true;
         }
 
     }

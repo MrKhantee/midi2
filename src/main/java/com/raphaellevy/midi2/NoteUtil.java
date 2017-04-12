@@ -36,7 +36,7 @@ public final class NoteUtil {
                 return A;
             case "B":
                 return B;
-            case "C5":
+            case "c":
                 return C5;
             case "—":
                 return CONTINUE;
@@ -64,7 +64,7 @@ public final class NoteUtil {
             case B:
                 return "B";
             case C5:
-                return "C5";
+                return "c";
             case CONTINUE:
                 return "—";
             case REST:

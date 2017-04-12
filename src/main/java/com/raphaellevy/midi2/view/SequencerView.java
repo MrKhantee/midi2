@@ -98,6 +98,10 @@ public class SequencerView {
                 view.menuBar = new MMenuBar(controller);
                 view.frame.setJMenuBar(view.menuBar);
 
+                //Add key listener
+                view.frame.setFocusable(true);
+                view.frame.addKeyListener(controller.new MKeyListener());
+
                 //Make the frame visible
                 view.frame.setVisible(true);
             });
@@ -250,6 +254,7 @@ public class SequencerView {
                 button.setFont(lato12.deriveFont(36f));
                 button.setActionCommand(String.format("%dnoteButton", i));
                 button.addActionListener(controller);
+                button.setFocusable(false);
                 add(button);
                 noteButtons[i] = button;
             }
