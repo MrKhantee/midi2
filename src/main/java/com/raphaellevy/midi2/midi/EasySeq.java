@@ -12,7 +12,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * Midi wrapper; MidiLatte wasn't working well for me so I made my own version.
  */
 public class EasySeq {
-    
+
     /**
      * The thread on which notes happen
      */
@@ -29,7 +29,7 @@ public class EasySeq {
      * The notes to be played
      */
     private LinkedBlockingQueue<Note> notes = new LinkedBlockingQueue<>();
-    
+
     /**
      * Make a new easy sequencer
      */
@@ -37,13 +37,13 @@ public class EasySeq {
         try {
             //Get the default midi synth
             synth = MidiSystem.getSynthesizer();
-            
+
             //Open it up
             if (!synth.isOpen() && !Midi2.MUTED) synth.open();
-            
+
             //Get the channels
             channels = synth.getChannels();
-            
+
             //Load instruments
             synth.loadAllInstruments(synth.getDefaultSoundbank());
         } catch (MidiUnavailableException e) {
@@ -74,7 +74,7 @@ public class EasySeq {
         });
         t.start();
     }
-    
+
     /**
      * Add a note to the queue of notes to be played
      *
@@ -84,7 +84,7 @@ public class EasySeq {
     public synchronized void addNote(int note, int mils) {
         notes.add(new Note(note, mils));
     }
-    
+
     /**
      * Add a rest
      *
@@ -93,7 +93,7 @@ public class EasySeq {
     public synchronized void addRest(int mils) {
         notes.add(new Note(-1, mils));
     }
-    
+
     /**
      * Stop everything
      */
@@ -109,7 +109,7 @@ public class EasySeq {
             }
         }
     }
-    
+
     /**
      * Represents a note to be played
      */
@@ -117,7 +117,7 @@ public class EasySeq {
         final int note;
         final int length;
         final int velocity;
-        
+
         /**
          * Make a new note of given length. A negative note value represents a rest.
          *
@@ -127,7 +127,7 @@ public class EasySeq {
         private Note(int note, int length) {
             this(note, length, 100);
         }
-        
+
         /**
          * Make a new note of given length and velocity. A negative note value represents a rest.
          *

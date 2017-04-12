@@ -3,8 +3,6 @@ package com.raphaellevy.midi2;
 import com.raphaellevy.midi2.midi.EasySeq;
 
 import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.TreeMap;
 
 /**
  * Represents a sequence of MIDI Notes. This class is immutable.
@@ -37,6 +35,7 @@ public final class MidiSequence {
 
     /**
      * Get a new MidiSequence with the given notes. REST represents a rest while CONTINUE represents a continued note
+     *
      * @param notes
      */
     public MidiSequence(int[] notes) {
@@ -68,7 +67,18 @@ public final class MidiSequence {
     }
 
     /**
+     * Returns the note at a given index
+     *
+     * @param index The index to get the note at
+     * @return The note at the index
+     */
+    public int getNote(int index) {
+        return notes[index];
+    }
+
+    /**
      * Stops the currently playing notes on sequencer and plays the contents of this {@link MidiSequence}.
+     *
      * @param sequencer The sequencer to play on.
      */
     public void play(EasySeq sequencer) {
@@ -78,10 +88,11 @@ public final class MidiSequence {
 
     /**
      * Plays the contents of this MidiSequence on the given {@link EasySeq}, after the currently playing notes finish.
+     *
      * @param sequencer The sequencer to play on.
      */
     public void playLater(EasySeq sequencer) {
-        for (int i = 0; i < 5;) {
+        for (int i = 0; i < 5; ) {
             if (notes[i] == REST) {
                 int restlength = 1;
                 for (int j = i + 1; j < 5 && notes[j] == CONTINUE; j++) {
@@ -91,14 +102,14 @@ public final class MidiSequence {
                 sequencer.addRest(NOTE_LENGTH * restlength);
                 i += restlength;
             } else if (notes[i] == CONTINUE) {
-                throw new IllegalStateException(String.format("There shouldn't be a continue here -- at position %d",i));
+                throw new IllegalStateException(String.format("There shouldn't be a continue here -- at position %d", i));
             } else {
                 int notelength = 1;
                 for (int j = i + 1; j < 5 && notes[j] == CONTINUE; j++) {
                     notelength++;
                     System.out.println("Continued note");
                 }
-                sequencer.addNote(notes[i], NOTE_LENGTH*notelength);
+                sequencer.addNote(notes[i], NOTE_LENGTH * notelength);
                 i += notelength;
             }
         }

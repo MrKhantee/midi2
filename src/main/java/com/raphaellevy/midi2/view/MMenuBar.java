@@ -52,7 +52,6 @@ class MMenuBar extends JMenuBar {
         fileMenu.addSeparator();
 
         addMenuItem(fileMenu, "Save", KeyStroke.getKeyStroke(VK_S, META_DOWN_MASK), e -> controller.saveItem());
-        addMenuItem(fileMenu, "Save As", KeyStroke.getKeyStroke(VK_S, META_DOWN_MASK | SHIFT_DOWN_MASK), e -> controller.saveAsItem());
 
         add(fileMenu);
     }
@@ -67,6 +66,11 @@ class MMenuBar extends JMenuBar {
 
         addMenuItem(sequenceMenu, "Play", KeyStroke.getKeyStroke(VK_P, META_DOWN_MASK), e -> controller.playItem());
         addMenuItem(sequenceMenu, "Stop", KeyStroke.getKeyStroke(VK_T, META_DOWN_MASK), e -> controller.stopItem());
+
+        sequenceMenu.addSeparator();
+
+        addMenuItem(sequenceMenu, "Add Rest", KeyStroke.getKeyStroke(VK_R, META_DOWN_MASK), e -> controller.addRestItem());
+        addMenuItem(sequenceMenu, "Continue Previous Note", KeyStroke.getKeyStroke(VK_C, META_DOWN_MASK), e -> controller.continueItem());
 
         add(sequenceMenu);
     }
