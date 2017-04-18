@@ -61,4 +61,23 @@ public class MenuBarController {
     public void instructionsItem() {
         app.displayInstructions();
     }
+
+    public void setInstrumentItem(String name) {
+        switch (name) {
+            case "Piano":
+                app.setInstrument(0);
+                break;
+            case "Guitar":
+                app.setInstrument(25);
+                break;
+            case "Trumpet":
+                app.setInstrument(57);
+                break;
+            case "Choir":
+                app.setInstrument(55);
+                break;
+            case "Harmonica":
+                app.setInstrument(23);
+        }
+    }
 }

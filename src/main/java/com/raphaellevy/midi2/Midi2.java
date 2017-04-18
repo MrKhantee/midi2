@@ -97,7 +97,7 @@ public class Midi2 {
      */
     public void notePressed(int note) {
         seq.stop();
-        seq.addNote(note, 200);
+        seq.addNote(note, 200, 110);
 
         sequence = sequence.withNote(note, cursor);
         controller.setMidiSequence(sequence);
@@ -213,5 +213,12 @@ public class Midi2 {
             instructionsAdded = true;
         }
 
+    }
+
+    /**
+     * Set the instrument
+     */
+    public void setInstrument(int instrument) {
+        seq.changeInstrument(instrument);
     }
 }

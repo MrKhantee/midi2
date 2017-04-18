@@ -55,7 +55,10 @@ public class EasySeq {
             while (true) {
                 try {
                     Note note = notes.take();
-                    if (note.note >= 0) {
+                    if (note instanceof InstrumentChange) {
+                        int instrument = ((InstrumentChange) note).instrument;
+                        channels[0].programChange(instrument);
+                    } else if (note.note >= 0) {
                         channels[0].noteOn(note.note, note.velocity);
                         System.out.println("On");
                         Thread.sleep(note.length);
@@ -85,6 +88,10 @@ public class EasySeq {
         notes.add(new Note(note, mils));
     }
 
+    public synchronized void addNote(int note, int mils, int velocity) {
+        notes.add(new Note(note, mils, velocity));
+    }
+
     /**
      * Add a rest
      *
@@ -92,6 +99,13 @@ public class EasySeq {
      */
     public synchronized void addRest(int mils) {
         notes.add(new Note(-1, mils));
+    }
+
+    /**
+     * Change the instrument
+     */
+    public synchronized void changeInstrument(int instrument) {
+        notes.add(new InstrumentChange(instrument));
     }
 
     /**
@@ -113,7 +127,7 @@ public class EasySeq {
     /**
      * Represents a note to be played
      */
-    private static final class Note {
+    private static class Note {
         final int note;
         final int length;
         final int velocity;
@@ -139,6 +153,16 @@ public class EasySeq {
             this.note = note;
             this.length = length;
             this.velocity = velocity;
+        }
+    }
+
+    private static final class InstrumentChange extends Note {
+
+        final int instrument;
+
+        private InstrumentChange(int instrument) {
+            super(0, 0);
+            this.instrument = instrument;
         }
     }
 }

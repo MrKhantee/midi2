@@ -29,11 +29,16 @@ class MMenuBar extends JMenuBar {
      */
     private JMenu helpMenu;
 
+    /**
+     * The instrument menu
+     */
+    private JMenu instrumentMenu;
     MMenuBar(SequencerController scontroller) {
         super();
         controller = new MenuBarController(scontroller);
         addFileMenu();
         addSequenceMenu();
+        addInstrumentMenu();
         addHelpMenu();
     }
 
@@ -83,12 +88,22 @@ class MMenuBar extends JMenuBar {
         add(helpMenu);
     }
 
+    private void addInstrumentMenu() {
+        instrumentMenu = new JMenu("Instrument");
+
+        addMenuItem(instrumentMenu, "Piano", KeyStroke.getKeyStroke(VK_1,META_DOWN_MASK), e -> controller.setInstrumentItem("Piano"));
+        addMenuItem(instrumentMenu, "Guitar", KeyStroke.getKeyStroke(VK_2,META_DOWN_MASK), e -> controller.setInstrumentItem("Guitar"));
+        addMenuItem(instrumentMenu, "Trumpet", KeyStroke.getKeyStroke(VK_3,META_DOWN_MASK), e -> controller.setInstrumentItem("Trumpet"));
+        addMenuItem(instrumentMenu, "Choir", KeyStroke.getKeyStroke(VK_4,META_DOWN_MASK), e -> controller.setInstrumentItem("Choir"));
+        addMenuItem(instrumentMenu, "Harmonica", KeyStroke.getKeyStroke(VK_5,META_DOWN_MASK), e -> controller.setInstrumentItem("Harmonica"));
+
+        add(instrumentMenu);
+    }
+
     private void addMenuItem(JMenu menu, String text, KeyStroke keyStroke, ActionListener listener) {
         JMenuItem item = new JMenuItem(text);
         item.setAccelerator(keyStroke);
         item.addActionListener(listener);
         menu.add(item);
     }
-
-    ;
 }
