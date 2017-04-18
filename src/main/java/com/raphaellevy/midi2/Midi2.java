@@ -206,11 +206,15 @@ public class Midi2 {
         if (!instructionsAdded) {
             try {
                 Files.copy(getClass().getResourceAsStream("/html/Instructions.html"), instructionsFile, StandardCopyOption.REPLACE_EXISTING);
-                Desktop.getDesktop().browse(instructionsFile.toUri());
             } catch (IOException e) {
                 e.printStackTrace();
             }
             instructionsAdded = true;
+        }
+        try {
+            Desktop.getDesktop().browse(instructionsFile.toUri());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
