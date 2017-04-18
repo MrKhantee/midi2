@@ -1,5 +1,6 @@
 package com.raphaellevy.midi2.view;
 
+import com.bulenkov.darcula.DarculaLaf;
 import com.raphaellevy.midi2.NoteUtil;
 import com.raphaellevy.midi2.controller.SequencerController;
 
@@ -79,7 +80,11 @@ public class SequencerView {
 
         try {
             SwingUtilities.invokeAndWait(() -> {
-
+                try {
+                    UIManager.setLookAndFeel(new DarculaLaf());
+                } catch (UnsupportedLookAndFeelException e) {
+                    e.printStackTrace();
+                }
                 //Create the panel
                 view.panel = view.new Panel();
 
@@ -89,7 +94,9 @@ public class SequencerView {
 
                 //Lay out the Panel
                 view.panel.setup();
-
+                JButton b = new JButton("hihi");
+                b.setBounds(0,0,200,200);
+                view.panel.add(b);
                 //Add the Panel to the JFrame
                 view.frame.setContentPane(view.panel);
                 view.frame.pack();
